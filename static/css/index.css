@@ -280,20 +280,35 @@ body {
     display: inline-block;
 }
 
-.dropbtn {
-    background-color: transparent;
+.dropdown button {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1));
     color: var(--text-color);
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
     font-size: 1rem;
-    border: none;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 0.5rem;
     cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Outfit', sans-serif;
     font-weight: 500;
-    font-family: 'Inter', sans-serif;
-    transition: color 0.2s;
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.1);
 }
 
-.dropbtn:hover {
-    color: var(--accent-color);
+.dropdown button:hover {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2));
+    border-color: rgba(139, 92, 246, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+}
+
+.dropdown button i {
+    margin-left: 0.5rem;
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.dropdown:hover button i {
+    transform: rotate(180deg);
 }
 
 .dropdown-content {
@@ -366,62 +381,17 @@ body {
     object-fit: contain;
 }
 
-/* Fullwidth Section */
-.fullwidth-section {
-    width: 100%;
-    padding: 4rem 0;
-    overflow-x: hidden;
-}
-
-.container-fluid {
-    width: 100%;
-    padding: 0;
-}
-
-.fullwidth-section .section-title {
-    text-align: center;
-    margin-bottom: 2rem;
-    padding: 0 2rem;
-}
-
-/* Horizontal Gallery */
-.horizontal-gallery {
+/* Results Gallery - Single Column Layout */
+.results-gallery {
     display: flex;
-    gap: 2rem;
-    overflow-x: auto;
-    padding: 2rem;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    transition: all 0.3s ease;
-    align-items: center;
-    /* Center align items vertically */
-}
-
-.horizontal-gallery::-webkit-scrollbar {
-    height: 10px;
-}
-
-.horizontal-gallery::-webkit-scrollbar-track {
-    background: var(--secondary-bg);
-    border-radius: 10px;
-}
-
-.horizontal-gallery::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-    border-radius: 10px;
-    transition: background 0.3s;
-}
-
-.horizontal-gallery::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-color);
+    flex-direction: column;
+    gap: 2.5rem;
+    padding: 2rem 0;
+    max-width: 900px;
+    margin: 0 auto;
 }
 
 .gallery-item {
-    flex: 0 0 auto;
-    width: auto;
-    /* Fit to content */
-    height: 450px;
-    /* Fixed height for uniform cards */
     background: var(--secondary-bg);
     border-radius: 1rem;
     padding: 1.5rem;
@@ -430,10 +400,7 @@ body {
     animation: fadeInUp 0.6s ease-out;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    overflow: hidden;
-    /* Prevent content overflow */
 }
 
 .gallery-item:hover {
@@ -449,22 +416,22 @@ body {
     margin: 0;
     margin-top: 1rem;
     text-align: center;
-    flex-shrink: 0;
-    /* Prevent title from shrinking */
+}
+
+/* Two-level title structure */
+.gallery-item .item-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.1rem;
 }
 
 .gallery-item img {
-    width: auto;
-    max-width: 600px;
+    width: 100%;
     height: auto;
-    max-height: 360px;
-    /* Reduced to fit within 450px card accounting for padding + title */
     border-radius: 0.75rem;
     cursor: pointer;
     transition: transform 0.3s;
     object-fit: contain;
-    flex-shrink: 0;
-    /* Prevent image from shrinking */
 }
 
 .gallery-item img:hover {
@@ -513,12 +480,10 @@ body {
     max-width: 90%;
     max-height: 90vh;
     object-fit: contain;
-    transform: scale(0.9);
-    transition: transform 0.3s ease;
-}
-
-.lightbox.show .lightbox-content {
-    transform: scale(1);
+    transition: transform 0.2s ease;
+    cursor: zoom-in;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 .lightbox-close {
@@ -528,12 +493,67 @@ body {
     color: #f1f1f1;
     font-size: 40px;
     font-weight: bold;
-    transition: 0.3s;
     cursor: pointer;
+    transition: color 0.2s;
     z-index: 2001;
 }
 
-.lightbox-close:hover,
+.lightbox-close:hover {
+    color: #bbb;
+}
+
+/* Lightbox Navigation Buttons */
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    color: white;
+    border: none;
+    font-size: 2rem;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    z-index: 2001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-nav:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.lightbox-prev {
+    left: 2rem;
+}
+
+.lightbox-next {
+    right: 2rem;
+}
+
+/* Lightbox Title */
+.lightbox-title {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 2rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    z-index: 2001;
+    max-width: 80%;
+    text-align: center;
+}
+
 .lightbox-close:focus {
     color: #bbb;
     text-decoration: none;
@@ -555,18 +575,33 @@ body {
     position: absolute;
     top: 1rem;
     right: 1rem;
-    background-color: var(--accent-color);
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
     color: white;
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
     cursor: pointer;
     font-size: 0.9rem;
-    transition: opacity 0.2s;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .copy-btn:hover {
-    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Copied success state with elegant animation */
+.copy-btn.copied {
+    background: linear-gradient(135deg, #10b981, #059669);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+}
+
+.copy-btn.copied:hover {
+    transform: scale(1.05);
 }
 
 pre {
@@ -639,32 +674,6 @@ pre {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Toast Notification */
-.toast {
-    visibility: hidden;
-    min-width: 250px;
-    background-color: var(--text-color);
-    color: var(--bg-color);
-    text-align: center;
-    border-radius: 8px;
-    padding: 12px 24px;
-    position: fixed;
-    z-index: 10000;
-    left: 50%;
-    bottom: 30px;
-    transform: translateX(-50%);
-    font-size: 1rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    opacity: 0;
-    transition: opacity 0.3s, bottom 0.3s;
-}
-
-.toast.show {
-    visibility: visible;
-    opacity: 1;
-    bottom: 50px;
-}
-
 /* Responsive */
 @media (max-width: 768px) {
     .container {
@@ -675,8 +684,31 @@ pre {
         font-size: 2rem;
     }
 
+    /* Mobile button layout */
+    .links {
+        flex-direction: column;
+        gap: 0.75rem;
+        width: 100%;
+        padding: 0 1rem;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+        padding: 0.875rem 1.5rem;
+    }
+
     .results-grid {
         grid-template-columns: 1fr;
+    }
+
+    /* Gallery already single column, just adjust spacing */
+    .results-gallery {
+        padding: 1rem 0;
+    }
+
+    .gallery-item {
+        padding: 1rem;
     }
 
     /* Vertical Layout for Gallery on Small Screens */
@@ -690,11 +722,15 @@ pre {
 
     .gallery-item {
         width: 100%;
-        max-width: 500px;
-        animation: fadeIn 0.6s ease-out;
+        padding: 1rem;
     }
 
     .gallery-item img {
+        max-width: 100%;
+        /* Constrain to card width */
+        max-height: none;
+        /* Remove height constraint on mobile */
+        width: 100%;
         height: auto;
     }
 

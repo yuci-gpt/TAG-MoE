@@ -49,18 +49,25 @@ document.addEventListener('mousemove', (e) => {
     cursorGlow.style.top = e.clientY + 'px';
 });
 
-// Copy BibTeX
+// Copy BibTeX with button animation
 function copyBibTeX() {
     const bibtexCode = document.getElementById('bibtex-code').innerText;
-    navigator.clipboard.writeText(bibtexCode).then(() => {
-        showToast();
-    });
-}
+    const btn = event.target;
 
-function showToast() {
-    const toast = document.getElementById("toast");
-    toast.className = "toast show";
-    setTimeout(function () { toast.className = toast.className.replace("show", ""); }, 3000);
+    navigator.clipboard.writeText(bibtexCode).then(() => {
+        // Store original content
+        const originalHTML = btn.innerHTML;
+
+        // Change to success state with animation
+        btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        btn.classList.add('copied');
+
+        // Reset after 2 seconds
+        setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.classList.remove('copied');
+        }, 2000);
+    });
 }
 
 // Smooth Scroll for Anchor Links
@@ -97,37 +104,175 @@ backToTopBtn.addEventListener('click', () => {
 // Lightbox
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightbox-img');
-const closeBtn = document.querySelector('.lightbox-close');
+const lightboxClose = document.querySelector('.lightbox-close');
+const lightboxTitle = document.getElementById('lightbox-title');
+const lightboxPrev = document.querySelector('.lightbox-prev');
+const lightboxNext = document.querySelector('.lightbox-next');
+let zoomLevel = 1;
+let isDragging = false;
+let startX, startY, translateX = 0, translateY = 0;
+let currentImageIndex = 0;
+let imageElements = [];
 
-function openLightbox(src) {
-    lightbox.style.display = "flex";
-    // Force reflow to enable transition
-    void lightbox.offsetWidth;
-    lightbox.classList.add('show');
-    lightboxImg.src = src;
-    document.body.style.overflow = 'hidden'; // Prevent scrolling
+// Gather all lightbox trigger images
+function updateImageElements() {
+    imageElements = Array.from(document.querySelectorAll('.lightbox-trigger'));
 }
 
-function closeLightbox() {
-    lightbox.classList.remove('show');
-    setTimeout(() => {
-        lightbox.style.display = "none";
-        document.body.style.overflow = 'auto'; // Restore scrolling
-    }, 300); // Match transition duration
-}
-
-document.querySelectorAll('.lightbox-trigger').forEach(img => {
-    img.addEventListener('click', () => {
-        openLightbox(img.src);
+// Open lightbox
+document.querySelectorAll('.lightbox-trigger').forEach((img, index) => {
+    img.addEventListener('click', function () {
+        updateImageElements();
+        currentImageIndex = imageElements.indexOf(this);
+        openLightboxAtIndex(currentImageIndex);
     });
 });
 
-closeBtn.addEventListener('click', () => {
-    closeLightbox();
-});
+function openLightboxAtIndex(index) {
+    currentImageIndex = index;
+    const img = imageElements[index];
+
+    lightbox.style.display = 'flex';
+    lightboxImg.src = img.src;
+    lightboxTitle.textContent = img.alt;
+
+    // Reset zoom when opening
+    zoomLevel = 1;
+    translateX = 0;
+    translateY = 0;
+    updateTransform();
+
+    // Update navigation buttons visibility
+    lightboxPrev.style.display = currentImageIndex > 0 ? 'flex' : 'none';
+    lightboxNext.style.display = currentImageIndex < imageElements.length - 1 ? 'flex' : 'none';
+
+    setTimeout(() => {
+        lightbox.classList.add('show');
+    }, 10);
+}
+
+// Close lightbox
+function closeLightbox() {
+    lightbox.classList.remove('show');
+    setTimeout(() => {
+        lightbox.style.display = 'none';
+        zoomLevel = 1;
+        translateX = 0;
+        translateY = 0;
+        updateTransform();
+    }, 300);
+}
+
+lightboxClose.addEventListener('click', closeLightbox);
 
 lightbox.addEventListener('click', (e) => {
     if (e.target === lightbox) {
         closeLightbox();
+    }
+});
+
+// Mouse wheel zoom
+lightboxImg.addEventListener('wheel', (e) => {
+    e.preventDefault();
+
+    const delta = e.deltaY > 0 ? -0.1 : 0.1;
+    const newZoom = Math.min(Math.max(1, zoomLevel + delta), 5); // Min 1x, Max 5x
+
+    if (newZoom !== zoomLevel) {
+        zoomLevel = newZoom;
+        updateTransform();
+        updateCursor();
+    }
+});
+
+// Update transform with zoom and pan
+function updateTransform() {
+    lightboxImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${zoomLevel})`;
+}
+
+// Update cursor based on zoom level
+function updateCursor() {
+    lightboxImg.style.cursor = zoomLevel > 1 ? 'grab' : 'zoom-in';
+}
+
+// Mouse drag to pan (when zoomed)
+lightboxImg.addEventListener('mousedown', (e) => {
+    if (zoomLevel > 1) {
+        isDragging = true;
+        startX = e.clientX - translateX;
+        startY = e.clientY - translateY;
+        lightboxImg.style.cursor = 'grabbing';
+        e.preventDefault();
+    }
+});
+
+document.addEventListener('mousemove', (e) => {
+    if (isDragging) {
+        translateX = e.clientX - startX;
+        translateY = e.clientY - startY;
+        updateTransform();
+    }
+});
+
+document.addEventListener('mouseup', () => {
+    if (isDragging) {
+        isDragging = false;
+        updateCursor();
+    }
+});
+
+// Touch drag to pan (when zoomed) - for mobile devices
+let touchStartX = 0;
+let touchStartY = 0;
+
+lightboxImg.addEventListener('touchstart', (e) => {
+    if (zoomLevel > 1 && e.touches.length === 1) {
+        isDragging = true;
+        touchStartX = e.touches[0].clientX - translateX;
+        touchStartY = e.touches[0].clientY - translateY;
+        e.preventDefault();
+    }
+});
+
+lightboxImg.addEventListener('touchmove', (e) => {
+    if (isDragging && e.touches.length === 1) {
+        translateX = e.touches[0].clientX - touchStartX;
+        translateY = e.touches[0].clientY - touchStartY;
+        updateTransform();
+        e.preventDefault();
+    }
+});
+
+lightboxImg.addEventListener('touchend', () => {
+    if (isDragging) {
+        isDragging = false;
+    }
+});
+
+// Navigation buttons
+lightboxPrev.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (currentImageIndex > 0) {
+        openLightboxAtIndex(currentImageIndex - 1);
+    }
+});
+
+lightboxNext.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (currentImageIndex < imageElements.length - 1) {
+        openLightboxAtIndex(currentImageIndex + 1);
+    }
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+    if (lightbox.classList.contains('show')) {
+        if (e.key === 'ArrowLeft' && currentImageIndex > 0) {
+            openLightboxAtIndex(currentImageIndex - 1);
+        } else if (e.key === 'ArrowRight' && currentImageIndex < imageElements.length - 1) {
+            openLightboxAtIndex(currentImageIndex + 1);
+        } else if (e.key === 'Escape') {
+            closeLightbox();
+        }
     }
 });

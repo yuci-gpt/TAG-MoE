@@ -9,6 +9,8 @@
     content="TAG-MoE: Task-Aware Gating for Unified Generative Mixture-of-Experts. A novel framework to inject semantic intent into MoE routing for unified image generation and editing.">
   <meta name="keywords"
     content="TAG-MoE, Mixture-of-Experts, Diffusion Models, Image Generation, Image Editing, Computer Vision, AI">
+  <meta name="author"
+    content="Yu Xu, Hongbin Yan, Juan Cao, Yiji Cheng, Tiankai Hang, Runze He, Zijin Yin, Shiyi Zhang, Yuxin Zhang, Jintao Li, Chunyu Wang, Qinglin Lu, Tong-Yee Lee, Fan Tang">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="article">
@@ -17,6 +19,8 @@
   <meta property="og:description"
     content="TAG-MoE: Task-Aware Gating for Unified Generative Mixture-of-Experts. A novel framework to inject semantic intent into MoE routing for unified image generation and editing.">
   <meta property="og:image" content="static/images/teaser.png">
+  <meta property="article:published_time" content="2025-01-01">
+  <meta property="article:author" content="Yu Xu">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
@@ -27,6 +31,20 @@
 
   <!-- Academic/Research Specific -->
   <meta name="citation_title" content="TAG-MoE: Task-Aware Gating for Unified Generative Mixture-of-Experts">
+  <meta name="citation_author" content="Xu, Yu">
+  <meta name="citation_author" content="Yan, Hongbin">
+  <meta name="citation_author" content="Cao, Juan">
+  <meta name="citation_author" content="Cheng, Yiji">
+  <meta name="citation_author" content="Hang, Tiankai">
+  <meta name="citation_author" content="He, Runze">
+  <meta name="citation_author" content="Yin, Zijin">
+  <meta name="citation_author" content="Zhang, Shiyi">
+  <meta name="citation_author" content="Zhang, Yuxin">
+  <meta name="citation_author" content="Li, Jintao">
+  <meta name="citation_author" content="Wang, Chunyu">
+  <meta name="citation_author" content="Lu, Qinglin">
+  <meta name="citation_author" content="Lee, Tong-Yee">
+  <meta name="citation_author" content="Tang, Fan">
   <meta name="citation_publication_date" content="2025">
 
   <!-- Favicon -->
@@ -49,10 +67,27 @@
   <!-- Structured Data -->
   <script type="application/ld+json">
   {
-    "@context": "https://schema.org",
+    "@context": "https://schema.org", 
     "@type": "ScholarlyArticle",
     "headline": "TAG-MoE: Task-Aware Gating for Unified Generative Mixture-of-Experts",
     "description": "TAG-MoE: Task-Aware Gating for Unified Generative Mixture-of-Experts. A novel framework to inject semantic intent into MoE routing for unified image generation and editing.",
+    "author": [
+      { "@type": "Person", "name": "Yu Xu" },
+      { "@type": "Person", "name": "Hongbin Yan" },
+      { "@type": "Person", "name": "Juan Cao" },
+      { "@type": "Person", "name": "Yiji Cheng" },
+      { "@type": "Person", "name": "Tiankai Hang" },
+      { "@type": "Person", "name": "Runze He" },
+      { "@type": "Person", "name": "Zijin Yin" },
+      { "@type": "Person", "name": "Shiyi Zhang" },
+      { "@type": "Person", "name": "Yuxin Zhang" },
+      { "@type": "Person", "name": "Jintao Li" },
+      { "@type": "Person", "name": "Chunyu Wang" },
+      { "@type": "Person", "name": "Qinglin Lu" },
+      { "@type": "Person", "name": "Tong-Yee Lee" },
+      { "@type": "Person", "name": "Fan Tang" }
+    ],
+    "datePublished": "2025-01-01",
     "image": "static/images/teaser.png"
   }
   </script>
@@ -70,6 +105,13 @@
         <a href="#abstract">Abstract</a>
         <a href="#method">Method</a>
         <a href="#results">Results</a>
+        <div class="dropdown">
+          <button class="dropbtn">More Works <i class="fas fa-chevron-down"></i></button>
+          <div class="dropdown-content">
+            <a href="https://yuci-gpt.github.io/headrouter/" target="_blank">HeadRouter</a>
+            <a href="https://yuci-gpt.github.io/In-Context-Brush/" target="_blank">In-Context Brush</a>
+          </div>
+        </div>
         <button id="theme-toggle" aria-label="Toggle Dark Mode">
           <i class="fas fa-moon"></i>
         </button>
@@ -82,6 +124,41 @@
       <h1 class="title">TAG-MoE: <span class="gradient-text">T</span>ask-<span class="gradient-text">A</span>ware <span
           class="gradient-text">G</span>ating for Unified Generative <span class="gradient-text">M</span>ixture-<span
           class="gradient-text">o</span>f-<span class="gradient-text">E</span>xperts</h1>
+
+      <div class="authors">
+        <span class="author"><a href="https://scholar.google.com/citations?user=TXI4OQMAAAAJ" target="_blank">Yu
+            Xu</a><sup>1,2†</sup></span>
+        <span class="author"><a href="https://academic.hongb.in/" target="_blank">Hongbin Yan</a><sup>1</sup></span>
+        <span class="author"><a href="https://scholar.google.com/citations?user=fSBdNg0AAAAJ" target="_blank">Juan
+            Cao</a><sup>1</sup></span>
+        <span class="author"><a href="https://scholar.google.com/citations?user=Plo8ZSYAAAAJ" target="_blank">Yiji
+            Cheng</a><sup>2</sup></span>
+        <span class="author"><a href="https://scholar.google.com/citations?user=momspv0AAAAJ" target="_blank">Tiankai
+            Hang</a><sup>2</sup></span>
+        <span class="author"><a href="https://scholar.google.com/citations?user=xFkLeUAAAAAJ" target="_blank">Runze
+            He</a><sup>2</sup></span>
+        <span class="author"><a href="https://dblp.org/pid/287/4835" target="_blank">Zijin Yin</a><sup>2</sup></span>
+        <span class="author"><a href="https://scholar.google.com/citations?user=vGBLpc8AAAAJ" target="_blank">Shiyi
+            Zhang</a><sup>2</sup></span>
+        <span class="author"><a href="https://scholar.google.com/citations?user=8VD0_DkAAAAJ" target="_blank">Yuxin
+            Zhang</a><sup>1</sup></span>
+        <span class="author"><a href="https://ieeexplore.ieee.org/author/37279850400" target="_blank">Jintao
+            Li</a><sup>1</sup></span>
+        <span class="author"><a href="https://scholar.google.co.jp/citations?user=VXQV5xwAAAAJ" target="_blank">Chunyu
+            Wang</a><sup>2‡</sup></span>
+        <span class="author"><a href="https://openreview.net/profile?id=~Qinglin_Lu2" target="_blank">Qinglin
+            Lu</a><sup>2</sup></span>
+        <span class="author"><a href="http://graphics.csie.ncku.edu.tw/Tony/tony.htm" target="_blank">Tong-Yee
+            Lee</a><sup>3</sup></span>
+        <span class="author"><a href="https://scholar.google.com/citations?user=PdKElfwAAAAJ" target="_blank">Fan
+            Tang</a><sup>1§</sup></span>
+      </div>
+
+      <div class="affiliations">
+        <span class="author-block"><sup>1</sup>University of Chinese Academy of Sciences</span><br>
+        <span class="author-block"><sup>2</sup>Tencent Hunyuan</span><br>
+        <span class="author-block"><sup>3</sup>National Cheng-Kung University</span>
+      </div>
 
       <div class="links">
         <a href="#" class="btn btn-primary">
@@ -172,25 +249,37 @@
     </div>
   </section>
 
-  <section id="results" class="section fullwidth-section">
-    <div class="container-fluid">
+  <section id="results" class="section">
+    <div class="container">
       <h2 class="section-title">Results</h2>
-      <div class="horizontal-gallery">
+      <div class="results-gallery">
         <div class="gallery-item">
-          <img src="static/images/multiple.png" alt="Multiple Tasks" class="lightbox-trigger">
-          <h3>Multiple Tasks</h3>
+          <img src="static/images/global_editing.png" alt="Global Editing" class="lightbox-trigger">
+          <h3 class="item-title">No Reference Editing</h3>
         </div>
         <div class="gallery-item">
-          <img src="static/images/sup_customization.png" alt="Subject Customization" class="lightbox-trigger">
-          <h3>Subject Customization</h3>
+          <img src="static/images/local_editing.png" alt="Local Editing" class="lightbox-trigger">
+          <h3 class="item-title">No Reference Editing</h3>
         </div>
         <div class="gallery-item">
-          <img src="static/images/sup_material.png" alt="Material Editing" class="lightbox-trigger">
-          <h3>Material Editing</h3>
+          <img src="static/images/controllable_generation.png" alt="Controllable Generation" class="lightbox-trigger">
+          <h3 class="item-title">Controllable Generation</h3>
+        </div>
+
+        <div class="gallery-item">
+          <img src="static/images/in_context_generation.png" alt="In-Context Generation" class="lightbox-trigger">
+          <h3 class="item-title">In-Context Generation</h3>
+        </div>
+
+        <div class="gallery-item">
+          <img src="static/images/subject_reference_generation.png" alt="Subject Reference Generation"
+            class="lightbox-trigger">
+          <h3 class="item-title">Subject Reference Generation</h3>
         </div>
         <div class="gallery-item">
-          <img src="static/images/sup_more.png" alt="More Results" class="lightbox-trigger">
-          <h3>More Results</h3>
+          <img src="static/images/style_reference_generation.png" alt="Style Reference Generation"
+            class="lightbox-trigger">
+          <h3 class="item-title">Style Reference Generation</h3>
         </div>
       </div>
     </div>
@@ -199,7 +288,14 @@
   <!-- Lightbox Modal -->
   <div id="lightbox" class="lightbox">
     <span class="lightbox-close">&times;</span>
+    <button class="lightbox-nav lightbox-prev" aria-label="Previous image">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <button class="lightbox-nav lightbox-next" aria-label="Next image">
+      <i class="fas fa-chevron-right"></i>
+    </button>
     <img class="lightbox-content" id="lightbox-img">
+    <div class="lightbox-title" id="lightbox-title"></div>
   </div>
 
   <section id="bibtex" class="section">
@@ -207,7 +303,7 @@
       <h2 class="section-title">BibTeX</h2>
       <div class="code-block">
         <button class="copy-btn" onclick="copyBibTeX()">Copy</button>
-        <pre id="bibtex-code"><code>@article{anonymous2025tagmoe,
+        <pre id="bibtex-code"><code>@article{xu2025tagmoe,
     title={TAG-MoE: Task-Aware Gating for Unified Generative Mixture-of-Experts},
     year={2025}
 }</code></pre>
@@ -230,11 +326,10 @@
     </div>
   </footer>
 
-  <button id="back-to-top" title="Go to top">
+  <button id="back-to-top" aria-label="Back to top">
     <i class="fas fa-arrow-up"></i>
   </button>
 
-  <div id="toast" class="toast">BibTeX copied!</div>
   <script src="static/js/index.js"></script>
 </body>
 
