@@ -101,7 +101,12 @@
       <a href="#" class="logo">
         <img src="static/images/logo_dark.png" alt="TAG-MoE Logo" id="navbar-logo">
       </a>
-      <div class="nav-links">
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
         <a href="#abstract">Abstract</a>
         <a href="#method">Method</a>
         <a href="#results">Results</a>
@@ -167,7 +172,7 @@
         <a href="#" class="btn btn-secondary">
           <i class="ai ai-arxiv"></i> arXiv
         </a>
-        <a href="#" class="btn btn-secondary">
+        <a href="https://github.com/ICTMCG/TAG-MoE" class="btn btn-secondary">
           <i class="fab fa-github"></i> Code (Coming Soon)
         </a>
       </div>
@@ -254,12 +259,21 @@
       <h2 class="section-title">Results</h2>
       <div class="results-gallery">
         <div class="gallery-item">
+          <img src="static/images/comparison_unified.png" alt="Qualitative Comparison" class="lightbox-trigger">
+          <h3 class="item-title">Qualitative Comparison</h3>
+        </div>
+
+        <div class="gallery-item">
           <img src="static/images/global_editing.png" alt="Global Editing" class="lightbox-trigger">
           <h3 class="item-title">No Reference Editing</h3>
         </div>
         <div class="gallery-item">
           <img src="static/images/local_editing.png" alt="Local Editing" class="lightbox-trigger">
           <h3 class="item-title">No Reference Editing</h3>
+        </div>
+        <div class="gallery-item">
+          <img src="static/images/material_editing.png" alt="Material Editing" class="lightbox-trigger">
+          <h3 class="item-title">Material Editing</h3>
         </div>
         <div class="gallery-item">
           <img src="static/images/controllable_generation.png" alt="Controllable Generation" class="lightbox-trigger">

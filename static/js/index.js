@@ -41,6 +41,37 @@ function updateThemeAssets(theme) {
     }
 }
 
+// Hamburger Menu Toggle
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('nav-links');
+
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navLinks.classList.toggle('active');
+});
+
+// Close mobile menu when clicking on a link
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+    });
+});
+
+// Mobile dropdown toggle
+document.querySelectorAll('.dropdown').forEach(dropdown => {
+    const dropbtn = dropdown.querySelector('.dropbtn');
+    if (dropbtn) {
+        dropbtn.addEventListener('click', (e) => {
+            // Only toggle on mobile (768px and below)
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                dropdown.classList.toggle('active');
+            }
+        });
+    }
+});
+
 // Cursor Glow Effect
 const cursorGlow = document.querySelector('.cursor-glow');
 
