@@ -255,28 +255,68 @@ document.addEventListener('mouseup', () => {
 // Touch drag to pan (when zoomed) - for mobile devices
 let touchStartX = 0;
 let touchStartY = 0;
+let initialPinchDistance = 0;
+let initialZoom = 1;
 
 lightboxImg.addEventListener('touchstart', (e) => {
-    if (zoomLevel > 1 && e.touches.length === 1) {
+    if (e.touches.length === 1 && zoomLevel > 1) {
+        // Single touch - pan when zoomed
         isDragging = true;
         touchStartX = e.touches[0].clientX - translateX;
         touchStartY = e.touches[0].clientY - translateY;
+        e.preventDefault();
+    } else if (e.touches.length === 2) {
+        // Two fingers - pinch to zoom
+        isDragging = false;
+        const touch1 = e.touches[0];
+        const touch2 = e.touches[1];
+        initialPinchDistance = Math.hypot(
+            touch2.clientX - touch1.clientX,
+            touch2.clientY - touch1.clientY
+        );
+        initialZoom = zoomLevel;
         e.preventDefault();
     }
 });
 
 lightboxImg.addEventListener('touchmove', (e) => {
-    if (isDragging && e.touches.length === 1) {
+    if (e.touches.length === 1 && isDragging && zoomLevel > 1) {
+        // Single touch pan
         translateX = e.touches[0].clientX - touchStartX;
         translateY = e.touches[0].clientY - touchStartY;
         updateTransform();
         e.preventDefault();
+    } else if (e.touches.length === 2) {
+        // Pinch zoom
+        const touch1 = e.touches[0];
+        const touch2 = e.touches[1];
+        const currentDistance = Math.hypot(
+            touch2.clientX - touch1.clientX,
+            touch2.clientY - touch1.clientY
+        );
+        
+        const scale = currentDistance / initialPinchDistance;
+        zoomLevel = Math.min(Math.max(1, initialZoom * scale), 5); // Min 1x, Max 5x
+        
+        // Reset translation when zooming out to 1x
+        if (zoomLevel === 1) {
+            translateX = 0;
+            translateY = 0;
+        }
+        
+        updateTransform();
+        updateCursor();
+        e.preventDefault();
     }
 });
 
-lightboxImg.addEventListener('touchend', () => {
+lightboxImg.addEventListener('touchend', (e) => {
     if (isDragging) {
         isDragging = false;
+    }
+    // Reset pinch state when lifting fingers
+    if (e.touches.length < 2) {
+        initialPinchDistance = 0;
     }
 });
 

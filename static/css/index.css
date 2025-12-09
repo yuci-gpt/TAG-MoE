@@ -581,6 +581,26 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Show navigation buttons on hover (desktop) */
+.lightbox:hover .lightbox-nav {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Always show on mobile/touch devices */
+@media (hover: none) and (pointer: coarse) {
+    .lightbox-nav {
+        opacity: 0.6;
+        pointer-events: auto;
+    }
+    
+    .lightbox-nav:active {
+        opacity: 1;
+    }
 }
 
 .lightbox-nav:hover {
@@ -741,11 +761,27 @@ pre {
     .title {
         font-size: 3rem;
     }
+
+    .authors {
+        font-size: 1rem;
+    }
+
+    .affiliations {
+        font-size: 1rem;
+    }
 }
 
 @media (max-width: 992px) {
     .title {
         font-size: 2.5rem;
+    }
+
+    .authors {
+        font-size: 0.95rem;
+    }
+
+    .affiliations {
+        font-size: 0.95rem;
     }
 }
 
@@ -757,6 +793,15 @@ pre {
 
     .title {
         font-size: 2rem;
+    }
+
+    .authors {
+        font-size: 0.9rem;
+        gap: 0.75rem;
+    }
+
+    .affiliations {
+        font-size: 0.9rem;
     }
 
     /* Show hamburger menu */
@@ -932,11 +977,29 @@ pre {
     .title {
         font-size: 1.5rem;
     }
+
+    .authors {
+        font-size: 0.85rem;
+        gap: 0.5rem;
+    }
+
+    .affiliations {
+        font-size: 0.85rem;
+    }
 }
 
 @media (max-width: 400px) {
     .title {
         font-size: 1.3rem;
+    }
+
+    .authors {
+        font-size: 0.8rem;
+        gap: 0.4rem;
+    }
+
+    .affiliations {
+        font-size: 0.8rem;
     }
 }
 
