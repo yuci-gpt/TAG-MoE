@@ -22,6 +22,25 @@
     transition: opacity 0.3s;
 }
 
+/* Conference badge */
+.venue {
+  margin-top: 14px;
+  text-align: center;
+}
+
+.venue-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
 [data-theme="dark"] {
     --bg-color: #0f172a;
     --text-color: #e2e8f0;
